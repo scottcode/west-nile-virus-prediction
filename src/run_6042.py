@@ -81,11 +81,19 @@ test['Trap'] = lbl.transform(test['Trap'].values)
 train = train.ix[:,(train != -1).any(axis=0)]
 test = test.ix[:,(test != -1).any(axis=0)]
 
+
+# 
+feature_names = ['Species','Trap']
+train = train[feature_names]
+test  = test[feature_names]
+
+
+
 # Random Forest Classifier 
-clf = ensemble.RandomForestClassifier(n_jobs=-1, n_estimators=1000, min_samples_split=1)
+clf = ensemble.RandomForestClassifier(n_jobs=-1, n_estimators=1000, min_samples_split=2)
 clf.fit(train, labels)
 
 # create predictions and submission file
 predictions = clf.predict_proba(test)[:,1]
 sample['WnvPresent'] = predictions
-sample.to_csv('beat_the_benchmark_no_weather.csv', index=False)
+sample.to_csv('beat_the_benchmark.csv', index=False)
